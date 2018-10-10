@@ -24,12 +24,16 @@ class InventoryUpdateRules {
         return item;
     }
 
-    static Item RegularItem(Item item) {
+    static Item NormalItem(Item item) {
         return UpdateItem(item, -1);
     }
 
     static Item AgedBrie(Item item) {
-        return UpdateItem(item, 1);
+        if (item.sellIn <= 0) {
+            return UpdateItem(item, 2);
+        } else {
+            return UpdateItem(item, 1);
+        }
     }
 
     static Item Sulfuras(Item item) {
