@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class InventoryTypes {
+class InventoryTypes {
 
+    // New inventory items can be added to their respective groups.
     static final List<String> AgeableBrie = new ArrayList<>(
             Collections.singletonList("Aged Brie")
     );
