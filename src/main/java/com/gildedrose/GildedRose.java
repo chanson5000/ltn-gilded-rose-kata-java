@@ -24,7 +24,7 @@ class GildedRose {
                 items[i] = InventoryUpdateRules.Conjured(items[i]);
 
             } else {
-                items[i] = InventoryUpdateRules.RegularItem(items[i]);
+                items[i] = InventoryUpdateRules.NormalItem(items[i]);
 
             }
         }
