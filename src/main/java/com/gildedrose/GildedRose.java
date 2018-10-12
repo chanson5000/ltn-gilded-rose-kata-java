@@ -1,5 +1,7 @@
 package com.gildedrose;
 
+import com.gildedrose.ItemType.RegularItemType;
+
 class GildedRose {
     Item[] items;
 
@@ -9,23 +11,15 @@ class GildedRose {
 
     void updateQuality() {
 
-        for (int i = 0; i < items.length; i++) {
-
-            if (InventoryTypes.AgeableBrie.contains(items[i].name)) {
-                items[i] = InventoryUpdateRules.AgedBrie(items[i]);
-
-            } else if (InventoryTypes.BackstagePass.contains(items[i].name)) {
-                items[i] = InventoryUpdateRules.BackstagePass(items[i]);
-
-            } else if (InventoryTypes.Sulfuras.contains(items[i].name)) {
-                items[i] = InventoryUpdateRules.Sulfuras(items[i]);
-
-            } else if (InventoryTypes.Conjured.contains(items[i].name)) {
-                items[i] = InventoryUpdateRules.Conjured(items[i]);
-
+        for (Item item : items) {
+            if (item instanceof RegularItemType) {
+                ((RegularItemType) item).updateItem();
             } else {
-                items[i] = InventoryUpdateRules.NormalItem(items[i]);
+                if (item.sellIn <= 0) item.quality -= 2;
+                else item.quality--;
+                if (item.quality < 0) item.quality = 0;
 
+                item.sellIn--;
             }
         }
     }
