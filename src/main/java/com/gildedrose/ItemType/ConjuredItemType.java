@@ -1,6 +1,7 @@
 package com.gildedrose.ItemType;
 
 public class ConjuredItemType extends RegularItemType {
+
     public ConjuredItemType(String name, int sellIn, int quality) {
         super(name, sellIn, quality);
     }
