@@ -2,7 +2,7 @@ package com.gildedrose.ItemType;
 
 import com.gildedrose.Item;
 
-public class RegularItemType extends Item implements ItemType {
+public class RegularItemType extends Item implements UpdateableItem {
 
     public RegularItemType(String name, int sellIn, int quality) {
         super(name, sellIn, quality);
