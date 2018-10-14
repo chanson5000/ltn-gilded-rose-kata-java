@@ -1,8 +1,8 @@
 package com.gildedrose;
 
-import static org.junit.Assert.*;
-
 import com.gildedrose.ItemType.AgeableBrieItemType;
+import com.gildedrose.ItemType.ItemTypeHelper;
+import com.gildedrose.ItemType.RegularItemType;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
@@ -12,21 +12,23 @@ import org.junit.runners.Parameterized;
 import java.util.Arrays;
 import java.util.Collection;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.junit.Assert.*;
+
 @RunWith(Enclosed.class)
 public class AgeableBreItemTypeTests {
+
+    private static final String DEFAULT_NAME = ItemTypeHelper.AgedBrie;
+    private static final int DEFAULT_SELL_IN = 5;
+    private static final int DEFAULT_QUALITY = 6;
+    private static AgeableBrieItemType ageableBrieItemType;
 
     @RunWith(Parameterized.class)
     public static class QualityParameterizedTests {
 
-        private int startingSellIn;
-        private int startingQuality;
-        private int expectedQuality;
-        private AgeableBrieItemType ageableBreItemType;
-
-        @Before
-        public void SetUp() {
-            ageableBreItemType = new AgeableBrieItemType("Aged Brie", 5, 5);
-        }
+        private final int startingSellIn;
+        private final int startingQuality;
+        private final int expectedQuality;
 
         public QualityParameterizedTests(int startingSellIn, int startingQuality, int expectedQuality) {
             this.startingSellIn = startingSellIn;
@@ -57,35 +59,63 @@ public class AgeableBreItemTypeTests {
             });
         }
 
+        @Before
+        public void SetUp() {
+            ageableBrieItemType = new AgeableBrieItemType(
+                    DEFAULT_NAME,
+                    DEFAULT_SELL_IN,
+                    DEFAULT_QUALITY);
+        }
+
         @Test
         public void WhenUpdated_QualityChangesCorrectlyBasedOnSellIn() {
-            ageableBreItemType.sellIn = startingSellIn;
-            ageableBreItemType.quality = startingQuality;
+            ageableBrieItemType.sellIn = startingSellIn;
+            ageableBrieItemType.quality = startingQuality;
 
-            ageableBreItemType.updateItem();
+            ageableBrieItemType.updateItem();
 
-            assertEquals(expectedQuality, ageableBreItemType.quality);
+            assertEquals(expectedQuality, ageableBrieItemType.quality);
         }
     }
 
     public static class NonParameterizedTests {
 
-        private AgeableBrieItemType ageableBrieItemType;
-
         @Before
         public void SetUp() {
-            ageableBrieItemType = new AgeableBrieItemType("Aged Brie", 5, 5);
+            ageableBrieItemType = new AgeableBrieItemType(
+                    DEFAULT_NAME,
+                    DEFAULT_SELL_IN,
+                    DEFAULT_QUALITY);
+        }
+
+        @Test
+        public void WhenAgeableBrieItemTypeCreated_IsInstanceOfRegularItemType() {
+            assertThat(ageableBrieItemType, instanceOf(RegularItemType.class));
+        }
+
+        @Test
+        public void WhenAgeableBrieItemTypeCreated_ConstructorsMatchFields() {
+            assertEquals(DEFAULT_NAME, ageableBrieItemType.name);
+            assertEquals(DEFAULT_SELL_IN, ageableBrieItemType.sellIn);
+            assertEquals(DEFAULT_QUALITY, ageableBrieItemType.quality);
         }
 
         @Test
         public void WhenUpdated_SellInDecreasesByOne() {
-            int expectedSellIn = 4;
+            int expectedSellIn = DEFAULT_SELL_IN - 1;
 
             ageableBrieItemType.updateItem();
 
             assertEquals(expectedSellIn, ageableBrieItemType.sellIn);
         }
+
+        @Test
+        public void ToString_ReturnsCorrectValuesString() {
+            String expectedString = DEFAULT_NAME
+                    + ", " + DEFAULT_SELL_IN
+                    + ", " + DEFAULT_QUALITY;
+
+            assertEquals(expectedString, ageableBrieItemType.toString());
+        }
     }
-
-
 }

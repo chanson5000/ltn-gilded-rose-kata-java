@@ -1,7 +1,5 @@
 package com.gildedrose;
 
-import static org.junit.Assert.*;
-
 import com.gildedrose.ItemType.RegularItemType;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,21 +10,22 @@ import org.junit.runners.Parameterized;
 import java.util.Arrays;
 import java.util.Collection;
 
+import static org.junit.Assert.assertEquals;
+
 @RunWith(Enclosed.class)
 public class RegularItemTypeTests {
+
+    private static final String REGULAR_DEFAULT_NAME = "Regular Item";
+    private static final int REGULAR_DEFAULT_SELL_IN = 5;
+    private static final int REGULAR_DEFAULT_QUALITY = 6;
+    private static RegularItemType regularItemType;
 
     @RunWith(Parameterized.class)
     public static class QualityParameterizedTests {
 
-        private int startingSellIn;
-        private int startingQuality;
-        private int expectedQuality;
-        private RegularItemType regularItemType;
-
-        @Before
-        public void SetUp() {
-            regularItemType = new RegularItemType("Regular Item", 5, 5);
-        }
+        private final int startingSellIn;
+        private final int startingQuality;
+        private final int expectedQuality;
 
         public QualityParameterizedTests(int startingSellIn, int startingQuality, int expectedQuality) {
             this.startingSellIn = startingSellIn;
@@ -58,6 +57,14 @@ public class RegularItemTypeTests {
             });
         }
 
+        @Before
+        public void SetUp() {
+            regularItemType = new RegularItemType(
+                    REGULAR_DEFAULT_NAME,
+                    REGULAR_DEFAULT_SELL_IN,
+                    REGULAR_DEFAULT_QUALITY);
+        }
+
         @Test
         public void WhenUpdated_QualityChangesCorrectly() {
             regularItemType.sellIn = startingSellIn;
@@ -71,20 +78,37 @@ public class RegularItemTypeTests {
 
     public static class NonParameterizedTests {
 
-        private RegularItemType regularItemType;
-
         @Before
         public void SetUp() {
-            regularItemType = new RegularItemType("Regular Item", 5, 5);
+            regularItemType = new RegularItemType(
+                    REGULAR_DEFAULT_NAME,
+                    REGULAR_DEFAULT_SELL_IN,
+                    REGULAR_DEFAULT_QUALITY);
+        }
+
+        @Test
+        public void WhenRegularItemTypeCreated_ConstructorsMatchFields() {
+            assertEquals(REGULAR_DEFAULT_NAME, regularItemType.name);
+            assertEquals(REGULAR_DEFAULT_SELL_IN, regularItemType.sellIn);
+            assertEquals(REGULAR_DEFAULT_QUALITY, regularItemType.quality);
         }
 
         @Test
         public void WhenUpdated_SellInDecreasesByOne() {
-            int expectedSellIn = 4;
+            int expectedSellIn = REGULAR_DEFAULT_SELL_IN - 1;
 
             regularItemType.updateItem();
 
             assertEquals(expectedSellIn, regularItemType.sellIn);
+        }
+
+        @Test
+        public void ToString_ReturnsCorrectValuesString() {
+            String expectedString = REGULAR_DEFAULT_NAME
+                    + ", " + REGULAR_DEFAULT_SELL_IN
+                    + ", " + REGULAR_DEFAULT_QUALITY;
+
+            assertEquals(expectedString, regularItemType.toString());
         }
     }
 }

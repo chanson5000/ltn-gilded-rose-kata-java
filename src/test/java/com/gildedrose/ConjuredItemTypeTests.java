@@ -1,6 +1,8 @@
 package com.gildedrose;
 
 import com.gildedrose.ItemType.ConjuredItemType;
+import com.gildedrose.ItemType.ItemTypeHelper;
+import com.gildedrose.ItemType.RegularItemType;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
@@ -10,23 +12,23 @@ import org.junit.runners.Parameterized;
 import java.util.Arrays;
 import java.util.Collection;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.*;
 
 @RunWith(Enclosed.class)
 public class ConjuredItemTypeTests {
 
+    private static final String DEFAULT_NAME = ItemTypeHelper.ConjuredManaCake;
+    private static final int CONJURED_DEFAULT_SELL_IN = 5;
+    private static final int CONJURED_DEFAULT_QUALITY = 6;
+    private static ConjuredItemType conjuredItemType;
+
     @RunWith(Parameterized.class)
     public static class QualityParameterizedTests {
 
-        private int startingSellIn;
-        private int startingQuality;
-        private int expectedQuality;
-        private ConjuredItemType conjuredItemType;
-
-        @Before
-        public void SetUp() {
-            conjuredItemType = new ConjuredItemType("Conjured Item", 5, 5);
-        }
+        private final int startingSellIn;
+        private final int startingQuality;
+        private final int expectedQuality;
 
         public QualityParameterizedTests(int startingSellIn, int startingQuality, int expectedQuality) {
             this.startingSellIn = startingSellIn;
@@ -62,6 +64,14 @@ public class ConjuredItemTypeTests {
             });
         }
 
+        @Before
+        public void SetUp() {
+            conjuredItemType = new ConjuredItemType(
+                    DEFAULT_NAME,
+                    CONJURED_DEFAULT_SELL_IN,
+                    CONJURED_DEFAULT_QUALITY);
+        }
+
         @Test
         public void WhenUpdated_QualityChangesCorrectly() {
             conjuredItemType.sellIn = startingSellIn;
@@ -75,20 +85,42 @@ public class ConjuredItemTypeTests {
 
     public static class NonParameterizedTests {
 
-        private ConjuredItemType conjuredItemType;
-
         @Before
         public void SetUp() {
-            conjuredItemType = new ConjuredItemType("Conjured Item", 5, 5);
+            conjuredItemType = new ConjuredItemType(
+                    DEFAULT_NAME,
+                    CONJURED_DEFAULT_SELL_IN,
+                    CONJURED_DEFAULT_QUALITY);
+        }
+
+        @Test
+        public void WhenConjuredItemTypeCreated_IsInstanceOfRegularItemType() {
+            assertThat(conjuredItemType, instanceOf(RegularItemType.class));
+        }
+
+        @Test
+        public void WhenConjuredItemTypeCreated_ConstructorsMatchFields() {
+            assertEquals(DEFAULT_NAME, conjuredItemType.name);
+            assertEquals(CONJURED_DEFAULT_SELL_IN, conjuredItemType.sellIn);
+            assertEquals(CONJURED_DEFAULT_QUALITY, conjuredItemType.quality);
         }
 
         @Test
         public void WhenUpdated_SellInDecreasedByOne() {
-            int expectedSellIn = 4;
+            int expectedSellIn = CONJURED_DEFAULT_SELL_IN - 1;
 
             conjuredItemType.updateItem();
 
             assertEquals(expectedSellIn, conjuredItemType.sellIn);
+        }
+
+        @Test
+        public void ToString_ReturnsCorrectValuesString() {
+            String expectedString = DEFAULT_NAME
+                    + ", " + CONJURED_DEFAULT_SELL_IN
+                    + ", " + CONJURED_DEFAULT_QUALITY;
+
+            assertEquals(expectedString, conjuredItemType.toString());
         }
     }
 }
