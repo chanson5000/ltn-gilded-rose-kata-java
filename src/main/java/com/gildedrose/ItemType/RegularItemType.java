@@ -10,7 +10,7 @@ public class RegularItemType extends Item implements UpdateableItem {
 
     @Override
     public void updateItem() {
-        if (sellIn <= 0) quality-=2;
+        if (sellIn <= 0) quality -= 2;
         else quality--;
 
         if (quality < 0) quality = 0;

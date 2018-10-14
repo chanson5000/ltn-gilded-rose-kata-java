@@ -8,8 +8,8 @@ public class ConjuredItemType extends RegularItemType {
 
     @Override
     public void updateItem() {
-        if (sellIn <= 0) quality-=4;
-        else quality-=2;
+        if (sellIn <= 0) quality -= 4;
+        else quality -= 2;
 
         if (quality < 0) quality = 0;
 

@@ -8,7 +8,7 @@ public class AgeableBrieItemType extends RegularItemType {
 
     @Override
     public void updateItem() {
-        if (sellIn <= 0) quality+=2;
+        if (sellIn <= 0) quality += 2;
         else quality++;
 
         if (quality > 50) quality = 50;

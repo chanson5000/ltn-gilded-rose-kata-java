@@ -8,7 +8,7 @@ public class ItemTypeHelper {
     public static final String BackstagePassTafka = "Backstage passes to a TAFKAL80ETC concert";
     public static final String ConjuredManaCake = "Conjured Mana Cake";
 
-    public static UpdateableItem convert(Item item) {
+    public static UpdateableItem convertToUpdateable(Item item) {
 
         switch (item.name) {
             case AgedBrie:

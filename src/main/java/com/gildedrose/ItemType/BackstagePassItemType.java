@@ -9,8 +9,8 @@ public class BackstagePassItemType extends RegularItemType {
     @Override
     public void updateItem() {
         if (sellIn <= 0) quality = 0;
-        else if (sellIn <= 5)  quality+=3;
-        else if (sellIn <= 10) quality+=2;
+        else if (sellIn <= 5) quality += 3;
+        else if (sellIn <= 10) quality += 2;
         else quality++;
 
         if (quality > 50) quality = 50;
